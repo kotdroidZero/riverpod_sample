@@ -2,12 +2,27 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:riverpod_sample/flavors/build_config.dart';
+import 'package:riverpod_sample/flavors/env_config.dart';
+import 'package:riverpod_sample/flavors/environment.dart';
 import 'package:riverpod_sample/my_providers.dart';
+import 'package:riverpod_sample/riverpod_app.dart';
 
 void main() {
+  EnvConfig devConfig = EnvConfig(
+    appName: "Riverpod Sample",
+    baseUrl: 'https://api.themoviedb.org/3',
+    shouldCollectCrashLog: true,
+  );
+
+  BuildConfig.instantiate(
+    envType: Environment.DEVELOPMENT,
+    envConfig: devConfig,
+  );
+
   runApp(
     const ProviderScope(
-      child: MyApp(),
+      child: RiverPodApplication(),
     ),
   );
 }
@@ -24,7 +39,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage6(),
+      home: const MyHomePage6(),
     );
   }
 }
@@ -133,7 +148,9 @@ class MyHomePage5 extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    print('build called');
+    if (kDebugMode) {
+      print('build called');
+    }
     var time = ref.watch(clockProvider);
     var formattedTime = DateFormat.Hms().format(time);
     return Scaffold(
