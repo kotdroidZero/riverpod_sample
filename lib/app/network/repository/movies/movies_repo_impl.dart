@@ -1,14 +1,14 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_sample/app/network/dio_provider.dart';
 import 'package:riverpod_sample/app/network/repository/api_repository.dart';
-import 'package:riverpod_sample/app/network/repository/popular_movie/popular_movie_repo.dart';
+import 'package:riverpod_sample/app/network/repository/movies/movies_repo.dart';
 import 'package:riverpod_sample/data/models/responses/popular_movies.dart';
 
 ///Author-Pushkar Srivastava
 ///Date-11/06/22
 
 class PopularMoviesRepositoryImpl extends ApiRepository
-    implements PopularMoviesRepository {
+    implements MoviesRepository {
   @override
   Future<PopularMovies> getPopularMovies() {
     var endPoint =

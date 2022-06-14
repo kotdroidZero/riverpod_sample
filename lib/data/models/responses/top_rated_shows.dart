@@ -1,8 +1,5 @@
-///Author-Pushkar Srivastava
-///Date-11/06/22
-
-class PopularMovies {
-  PopularMovies({
+class TopRatedShows {
+  TopRatedShows({
     this.page,
     this.results,
     this.totalPages,
@@ -14,12 +11,12 @@ class PopularMovies {
   int? totalPages;
   int? totalResults;
 
-  factory PopularMovies.fromJson(Map<String, dynamic> json) => PopularMovies(
-        page: json["page"],
+  factory TopRatedShows.fromJson(Map<String, dynamic> json) => TopRatedShows(
+        page: json["page"] == null ? null : json["page"],
         results: json["results"] == null
             ? null
             : List<Result>.from(json["results"].map((x) => Result.fromJson(x))),
-        totalPages: json["total_pages"],
+        totalPages: json["total_pages"] == null ? null : json["total_pages"],
         totalResults:
             json["total_results"] == null ? null : json["total_results"],
       );
@@ -36,59 +33,58 @@ class PopularMovies {
 
 class Result {
   Result({
-    this.adult,
     this.backdropPath,
+    this.firstAirDate,
     this.genreIds,
     this.id,
+    this.name,
+    this.originCountry,
     this.originalLanguage,
-    this.originalTitle,
+    this.originalName,
     this.overview,
     this.popularity,
     this.posterPath,
-    this.releaseDate,
-    this.title,
-    this.video,
     this.voteAverage,
     this.voteCount,
   });
 
-  bool? adult;
   String? backdropPath;
+  DateTime? firstAirDate;
   List<int>? genreIds;
   int? id;
-  OriginalLanguage? originalLanguage;
-  String? originalTitle;
+  String? name;
+  List<String>? originCountry;
+  String? originalLanguage;
+  String? originalName;
   String? overview;
   double? popularity;
   String? posterPath;
-  DateTime? releaseDate;
-  String? title;
-  bool? video;
   double? voteAverage;
   int? voteCount;
 
   factory Result.fromJson(Map<String, dynamic> json) => Result(
-        adult: json["adult"] == null ? null : json["adult"],
         backdropPath:
             json["backdrop_path"] == null ? null : json["backdrop_path"],
+        firstAirDate: json["first_air_date"] == null
+            ? null
+            : DateTime.parse(json["first_air_date"]),
         genreIds: json["genre_ids"] == null
             ? null
             : List<int>.from(json["genre_ids"].map((x) => x)),
         id: json["id"] == null ? null : json["id"],
+        name: json["name"] == null ? null : json["name"],
+        originCountry: json["origin_country"] == null
+            ? null
+            : List<String>.from(json["origin_country"].map((x) => x)),
         originalLanguage: json["original_language"] == null
             ? null
-            : originalLanguageValues.map![json["original_language"]],
-        originalTitle:
-            json["original_title"] == null ? null : json["original_title"],
+            : json["original_language"],
+        originalName:
+            json["original_name"] == null ? null : json["original_name"],
         overview: json["overview"] == null ? null : json["overview"],
         popularity:
             json["popularity"] == null ? null : json["popularity"].toDouble(),
         posterPath: json["poster_path"] == null ? null : json["poster_path"],
-        releaseDate: json["release_date"] == null
-            ? null
-            : DateTime.parse(json["release_date"]),
-        title: json["title"] == null ? null : json["title"],
-        video: json["video"] == null ? null : json["video"],
         voteAverage: json["vote_average"] == null
             ? null
             : json["vote_average"].toDouble(),
@@ -96,49 +92,24 @@ class Result {
       );
 
   Map<String, dynamic> toJson() => {
-        "adult": adult == null ? null : adult,
         "backdrop_path": backdropPath == null ? null : backdropPath,
+        "first_air_date": firstAirDate == null
+            ? null
+            : "${firstAirDate!.year.toString().padLeft(4, '0')}-${firstAirDate!.month.toString().padLeft(2, '0')}-${firstAirDate!.day.toString().padLeft(2, '0')}",
         "genre_ids": genreIds == null
             ? null
             : List<dynamic>.from(genreIds!.map((x) => x)),
         "id": id == null ? null : id,
-        "original_language": originalLanguage == null
+        "name": name == null ? null : name,
+        "origin_country": originCountry == null
             ? null
-            : originalLanguageValues.reverse![originalLanguage],
-        "original_title": originalTitle == null ? null : originalTitle,
+            : List<dynamic>.from(originCountry!.map((x) => x)),
+        "original_language": originalLanguage == null ? null : originalLanguage,
+        "original_name": originalName == null ? null : originalName,
         "overview": overview == null ? null : overview,
         "popularity": popularity == null ? null : popularity,
         "poster_path": posterPath == null ? null : posterPath,
-        "release_date": releaseDate == null
-            ? null
-            : "${releaseDate?.year.toString().padLeft(4, '0')}-${releaseDate?.month.toString().padLeft(2, '0')}-${releaseDate?.day.toString().padLeft(2, '0')}",
-        "title": title == null ? null : title,
-        "video": video == null ? null : video,
         "vote_average": voteAverage == null ? null : voteAverage,
         "vote_count": voteCount == null ? null : voteCount,
       };
-
-  getVotingPercentage() => (voteAverage ?? 0.0) * 10;
-}
-
-enum OriginalLanguage { EN, ES, FR }
-
-final originalLanguageValues = EnumValues({
-  "en": OriginalLanguage.EN,
-  "es": OriginalLanguage.ES,
-  "fr": OriginalLanguage.FR
-});
-
-class EnumValues<T> {
-  Map<String, T>? map;
-  Map<T, String>? reverseMap;
-
-  EnumValues(this.map);
-
-  Map<T, String>? get reverse {
-    if (reverseMap == null) {
-      reverseMap = map?.map((k, v) => new MapEntry(v, k));
-    }
-    return reverseMap;
-  }
 }

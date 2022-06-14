@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_sample/app/features/popular_movies/popular_movies_page.dart';
+import 'package:riverpod_sample/app/approutes.dart';
+import 'package:riverpod_sample/app/features/dashboard/page/dashboard_page.dart';
+import 'package:riverpod_sample/app/features/movies/popular_movies/page/popular_movies_page.dart';
 import 'package:riverpod_sample/app/themes.dart';
 
 class RiverPodApplication extends ConsumerWidget {
@@ -15,8 +17,8 @@ class RiverPodApplication extends ConsumerWidget {
       darkTheme: AppTheme.darkTheme(context),
       // initialRoute: AppRoutes.popularMoviesRoute,
       routes: {
-        "/": (context) => const PopularMoviesPage(),
-        "/popularMoviesRoute": (context) => const PopularMoviesPage(),
+        "/": (context) => const DashboardPage(),
+        AppRoutes.popularMoviesRoute: (context) => const PopularMoviesPage(),
         // AppRoutes.homeRoute: (context) => const HomePage(),
         // AppRoutes.loginRoute: (context) => const LoginPage(),
       },

@@ -1,11 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_sample/app/core/values/app_strings.dart';
-import 'package:riverpod_sample/app/core/widget/custom_app_bar.dart';
+
 import 'package:riverpod_sample/app/core/widget/custom_loader.dart';
-import 'package:riverpod_sample/app/features/popular_movies/movie_item.dart';
-import 'package:riverpod_sample/app/features/popular_movies/popular_movies_provider.dart';
+import 'package:riverpod_sample/app/features/movies/popular_movies/widget/movie_item.dart';
+import 'package:riverpod_sample/app/features/movies/popular_movies/provider/popular_movies_provider.dart';
 import 'package:riverpod_sample/data/models/responses/popular_movies.dart';
 
 class PopularMoviesPage extends ConsumerWidget {
@@ -15,22 +14,24 @@ class PopularMoviesPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     var asyncMoviesList = ref.watch(getPopularMovies);
     return Scaffold(
-      appBar: CustomAppBar(
-        appBarTitleText: AppStrings.popularMoviesTitle,
-      ),
       body: asyncMoviesList.when(
         data: (data) {
-          return SingleChildScrollView(
-            child: Column(
-              children: [
-                movieList(data.results ?? []),
-              ],
+          return RefreshIndicator(
+            onRefresh: () async {
+              ref.read(getPopularMovies);
+            },
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  movieList(data.results ?? []),
+                ],
+              ),
             ),
           );
         },
         error: (e, t) {
           return Center(
-            child: Text('Error ${e}'),
+            child: Text('Error ${e.toString()}'),
           );
         },
         loading: () => const CustomLoader(),
@@ -72,14 +73,6 @@ class PopularMoviesPage extends ConsumerWidget {
       maxCrossAxisExtent: 200.0,
       childAspectRatio: 3.5 / 7,
       children: movies.map((e) => PopularMovieItem(movie: e)).toList(),
-    );
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: movies.length,
-      itemBuilder: (context, index) {
-        var movie = movies[index];
-        return PopularMovieItem(movie: movie);
-      },
     );
   }
 }

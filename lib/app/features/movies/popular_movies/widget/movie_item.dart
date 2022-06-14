@@ -33,7 +33,7 @@ class PopularMovieItem extends ConsumerWidget {
                   width: MediaQuery.of(context).size.width,
                   height: kIsWeb
                       ? MediaQuery.of(context).size.height * 0.23
-                      : MediaQuery.of(context).size.height * 0.35,
+                      : MediaQuery.of(context).size.height * 0.28,
                   child: ClipRRect(
                     child: Image.network(
                       "https://image.tmdb.org/t/p/w500/${movie?.posterPath}",
@@ -72,7 +72,7 @@ class PopularMovieItem extends ConsumerWidget {
               left: 5,
               top: kIsWeb
                   ? MediaQuery.of(context).size.height * 0.2
-                  : MediaQuery.of(context).size.height * 0.32,
+                  : MediaQuery.of(context).size.height * 0.25,
               child: userRatingWidget(movie!),
             ),
           ],
@@ -88,7 +88,7 @@ class PopularMovieItem extends ConsumerWidget {
         border: Border.all(color: AppColors.appBarColor),
         color: Colors.black.withOpacity(0.9),
       ),
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(16),
       child: Center(
         child: Text(
           movie.getVotingPercentage().toString() + '%',
